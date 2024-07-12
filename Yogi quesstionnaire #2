@@ -1,3 +1,6 @@
+Your code seems to be missing the closing parts of your JSX elements and strings in some places. Here’s a corrected version of the code:
+
+```jsx
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Clock, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -229,4 +232,4 @@ const InteractiveBook = () => {
               : selectedAnswer === index
               ? 'bg-red-500 hover:bg-red-600'
               : 'bg-blue-500 hover:bg-blue-600'
-            : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600To
+            : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600'
