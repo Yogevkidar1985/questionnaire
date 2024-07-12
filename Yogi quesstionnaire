@@ -1,0 +1,232 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Clock, Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+
+const bookContent = [
+  {
+    title: "פרק 1: שאלות מצחיקות על יוגב",
+    content: "בואו נלמד על יוגב בצורה מצחיקה!",
+    questions: [
+      {
+        question: "האם יוגב יכול להיכנס לחמש אסלות?",
+        options: [
+          "א. כן, עם כוח על-טבעי",
+          "ב. רק אם הוא יעמוד על רגל אחת",
+          "ג. לא, יוגב זה לא חמש"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "למה יוגב מזמין שלוש פעמים וולט ביום?",
+        options: [
+          "א. כי הוא מתעניין במשלוחים",
+          "ב. כי הוא אוהב את השליחים",
+          "ג. כי זו הדרך הכי מהירה לקבל ארוחת צהריים"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "האם תימנים באמת אוהבים בצקים? למה יוגב דוחף מלא לחוחים?",
+        options: [
+          "א. כי לחוח זה כמו פיצה רק מתוק",
+          "ב. כי יוגב אוהב את הקריספיות",
+          "ג. כי הוא אוהב לחם עם סיפור"
+        ],
+        correctAnswer: 2
+      }
+    ]
+  },
+  {
+    title: "פרק 2: בדיחות על יוגב והצדדים שלו",
+    content: "בואו נגלה עוד דברים מצחיקים על יוגב!",
+    questions: [
+      {
+        question: "האם הצדדים של יוגב יפים? למה רק בנים יכולים למשש אותם?",
+        options: [
+          "א. כי הם דומים לגלידת פיסטוק",
+          "ב. כי רק בנים אוהבים להרגיש חזק",
+          "ג. כי הם רוצים לבדוק אם יש שם משהו חבוי"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "כשיוגב עולה למעלית, האם המעלית נתקעת?",
+        options: [
+          "א. כן, ואז מזמינים מכבי אש",
+          "ב. לא, היא פשוט לוקחת אוויר וממשיכה",
+          "ג. תלוי אם יש עוד אנשים במעלית"
+        ],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    title: "פרק 3: עוד בדיחות מצחיקות",
+    content: "הנה כמה בדיחות נוספות על יוגב!",
+    questions: [
+      {
+        question: "מה יקרה אם יוגב יכנס לבריכה עם משקולת?",
+        options: [
+          "א. הבריכה תגלוש",
+          "ב. יוגב יהפוך לצוללן",
+          "ג. לא יקרה כלום, יוגב פשוט יצוף"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "למה יוגב תמיד מבקש שתי מנות במסעדה?",
+        options: [
+          "א. כי הוא רוצה לוודא שהוא שבע",
+          "ב. כי הוא לא אוהב לחלוק",
+          "ג. כי המנה הראשונה היא רק חימום"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "מה יקרה אם יוגב ינסה לרוץ מרתון?",
+        options: [
+          "א. המרתון יהפוך לפיקניק",
+          "ב. יוגב יעבור למרתון טלוויזיה",
+          "ג. המרתון ייגמר לפני שהוא יתחיל"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "מה ההבדל בין יוגב לחבית?",
+        options: [
+          "א. החבית מלאה בנוזלים, ויוגב מלא באוכל",
+          "ב. החבית קלה יותר להרים",
+          "ג. אין הבדל, שניהם עגולים"
+        ],
+        correctAnswer: 0
+      }
+    ]
+  },
+  {
+    title: "פרק 4: עוד בדיחות",
+    content: "הנה עוד כמה בדיחות על יוגב!",
+    questions: [
+      {
+        question: "למה יוגב אף פעם לא הולך לקולנוע?",
+        options: [
+          "א. כי הוא חושב שהפופקורן זה ארוחת ביניים",
+          "ב. כי הוא תמיד חוסם את השורה",
+          "ג. כי הוא מעדיף לראות את הסרט במיטה"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "מה קורה כשמנסים לחבק את יוגב?",
+        options: [
+          "א. צריכים להזמין מסוק חילוץ",
+          "ב. זה מרגיש כמו לחבק ענן",
+          "ג. אי אפשר להקיף אותו בידיים"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "למה יוגב תמיד לובש פיג'מה?",
+        options: [
+          "א. כי הוא מוכן לכל מצב של שינה",
+          "ב. כי הוא לא מצליח למצוא בגדים אחרים",
+          "ג. כי זה מה שנוח לו"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "מה יוגב עושה במכון כושר?",
+        options: [
+          "א. אוכל את החטיפים במזנון",
+          "ב. שואל את המאמנים על מתכונים",
+          "ג. מחפש את המכשירים שלא דורשים מאמץ"
+        ],
+        correctAnswer: 2
+      }
+    ]
+  },
+  {
+    title: "סיום מצחיק",
+    content: "האם יוגב אוהב בדיחות עליו? כנראה שלא, אבל היי, לפחות ניסינו לשמור על החיוך!"
+  }
+];
+
+const InteractiveBook = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(20);
+  const [shake, setShake] = useState(false);
+
+  useEffect(() => {
+    if (timeLeft > 0 && !showAnswer) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0 && !showAnswer) {
+      setShowAnswer(true);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+    }
+  }, [timeLeft, showAnswer]);
+
+  const handleNextPage = () => {
+    if (currentPage < bookContent.length - 1) {
+      setCurrentPage(currentPage + 1);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setShowAnswer(false);
+      setTimeLeft(20);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setShowAnswer(false);
+      setTimeLeft(20);
+    }
+  };
+
+  const handleAnswerSelect = (index) => {
+    if (!showAnswer) {
+      setSelectedAnswer(index);
+      setShowAnswer(true);
+      if (index === bookContent[currentPage].questions[currentQuestionIndex].correctAnswer) {
+        setScore(score + 1);
+      }
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    const currentChapter = bookContent[currentPage];
+    if (currentChapter.questions && currentQuestionIndex < currentChapter.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+      setShowAnswer(false);
+      setTimeLeft(20);
+    } else {
+      handleNextPage();
+    }
+  };
+
+  const renderOptions = () => {
+    const currentQuestion = bookContent[currentPage].questions[currentQuestionIndex];
+    return currentQuestion.options.map((option, index) => (
+      <Button
+        key={index}
+        onClick={() => handleAnswerSelect(index)}
+        className={`mb-4 p-6 text-xl font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg ${
+          showAnswer
+            ? index === currentQuestion.correctAnswer
+              ? 'bg-green-500 hover:bg-green-600'
+              : selectedAnswer === index
+              ? 'bg-red-500 hover:bg-red-600'
+              : 'bg-blue-500 hover:bg-blue-600'
+            : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600To
